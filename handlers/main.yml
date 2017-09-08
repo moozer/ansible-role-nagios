@@ -1,0 +1,4 @@
+- name: prometheus restart
+  service:
+    name: prometheus
+    state: restarted

@@ -1,0 +1,6 @@
+- name: say hi
+  debug: msg="hi"
+
+
+- name: install prometheus
+  include: install_prometheus.yml
