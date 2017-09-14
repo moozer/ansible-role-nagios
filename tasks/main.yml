@@ -2,6 +2,13 @@
   debug: msg="hi"
 
 
-- name: install nagios
+- name: install nagios core
   include: install_nagios_core.yml
   tags: nagios_core
+
+- name: install nagios plugins
+  include: install_nagios_plugins.yml
+  tags: nagios_plugins
+
+- name: start nagios
+  systemd: name=nagios state=started

@@ -1,0 +1,52 @@
+- name: install built packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - autoconf
+    - gcc
+    - libc6
+    - libmcrypt-dev
+    - make
+    - libssl-dev
+    - wget
+    - bc
+    - gawk
+    - dc
+    - build-essential
+    - snmp
+    - libnet-snmp-perl
+    - gettext
+
+- name: download nagios plugins tarball
+  connection: local
+  become: no
+  get_url:
+    url: "https://github.com/nagios-plugins/nagios-plugins/archive/{{ nagios_plugins_tgz_filename }}"
+    dest: "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
+
+- name: "Extract into {{nagios_plugins_tgz_filename}} to {{ nagios_dir }}"
+  unarchive:
+    src:  "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
+    dest: "{{ nagios_opt_dir }}"
+
+- name: run setup tool
+  command: "./tools/setup"
+  args:
+    chdir: "{{nagios_plugins_dir}}"
+
+- name: run configure
+  command: "./configure"
+  args:
+    chdir: "{{nagios_plugins_dir}}"
+
+- name: run make
+  command: "make"
+  args:
+    chdir: "{{nagios_plugins_dir}}"
+
+- name: run make install
+  command: "make install"
+  args:
+    chdir: "{{nagios_plugins_dir}}"
+  notify: reload nagios

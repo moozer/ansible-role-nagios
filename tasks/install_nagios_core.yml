@@ -69,7 +69,7 @@
     state: directory
     path: "{{ nagios_opt_dir }}"
 
-- name: "Extract into {{nagios_tgz_filename}} to {{ nagios_dir }}"
+- name: Extract into {{ nagios_tgz_filename }} to {{ nagios_opt_dir }}
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
@@ -127,3 +127,8 @@
     group: www-data
     mode: 0640
   notify: apache2 restart
+
+- name: enable nagios as service
+  systemd:
+    name: nagios
+    enabled: yes

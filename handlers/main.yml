@@ -1,3 +1,8 @@
 # nothing yet
 - name: apache2 restart
   service: state=restarted name=apache2
+
+- name: reload nagios
+  systemd:
+    name: nagios
+    state: reloaded
