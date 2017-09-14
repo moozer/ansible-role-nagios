@@ -1,7 +1,20 @@
 # inspiration from
 # - https://linoxide.com/monitoring-2/install-nagios-4-debian-9/
 
-- name: install apcahe webserver
+# add user and group
+- name: add nagios command group
+  group:
+    name: nagcmd
+    state: present
+
+- name: add nahios user
+  user:
+    name: nagios
+    shell: /bin/nologin
+    groups: nagcmd
+
+# install packages
+- name: install apache webserver
   apt:
     name: "{{ item }}"
     state: present
@@ -10,6 +23,12 @@
     - apache2-utils
     - php
 
+- name: put www-data in nagcmd group
+  user:
+    name: www-data
+    groups: nagcmd
+    append: yes
+
 - name: install general tools
   apt:
     name: "{{ item }}"
@@ -17,6 +36,7 @@
   with_items:
     - wget
     - unzip
+    - python-passlib
 
 - name: install built environment
   apt:
@@ -49,7 +69,7 @@
     state: directory
     path: "{{ nagios_opt_dir }}"
 
-- name: Extract into {{nagios_tgz_filename}} to {{ nagios_dir }}
+- name: "Extract into {{nagios_tgz_filename}} to {{ nagios_dir }}"
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
@@ -89,12 +109,21 @@
   args:
     chdir: "{{nagios_core_dir}}"
 
-- apache2_module:
+- name: enable modules in apache
+  apache2_module:
     state: present
-    name: rewrite
+    name: "{{ item }}"
+  with_items:
+    - rewrite
+    - cgi
   notify: apache2 restart
 
-- apache2_module:
-    state: present
-    name: cgi
+- name: setup password for nagios admin
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: "{{nagios_admin_pass}}"
+    owner: root
+    group: www-data
+    mode: 0640
   notify: apache2 restart

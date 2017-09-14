@@ -4,3 +4,4 @@
 
 - name: install nagios
   include: install_nagios_core.yml
+  tags: nagios_core
