@@ -1,6 +1,9 @@
 - name: say hi
   debug: msg="hi"
 
+- name: install nagios common
+  include: install_nagios_common.yml
+  tags: nagios_common
 
 - name: install nagios core
   include: install_nagios_core.yml
