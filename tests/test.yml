@@ -12,6 +12,7 @@
 
 - hosts: srv-mon
   become: true
+  #become_method: su
 
   pre_tasks:
   - name: update apt if applicable

@@ -2,5 +2,5 @@
   debug: msg="hi"
 
 
-- name: install prometheus
-  include: install_prometheus.yml
+- name: install nagios
+  include: install_nagios_core.yml

@@ -1,0 +1,100 @@
+# inspiration from
+# - https://linoxide.com/monitoring-2/install-nagios-4-debian-9/
+
+- name: install apcahe webserver
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apache2
+    - apache2-utils
+    - php
+
+- name: install general tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wget
+    - unzip
+
+- name: install built environment
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - autoconf
+    - gcc
+    - libc6
+    - make
+    - libgd2-xpm-dev
+
+- name: "create local cache dir ({{local_cache_dir}})"
+  connection: local
+  become: no
+  file:
+    state: directory
+    path: "{{ local_cache_dir }}"
+
+- name: download tarball
+  connection: local
+  become: no
+  get_url:
+    url: https://github.com/NagiosEnterprises/nagioscore/archive/{{nagios_tgz_filename}}
+    dest: "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
+
+- name: create nagios dir
+  file:
+    state: directory
+    path: "{{ nagios_opt_dir }}"
+
+- name: Extract into {{nagios_tgz_filename}} to {{ nagios_dir }}
+  unarchive:
+    src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
+    dest: "{{ nagios_opt_dir }}"
+
+- name: run configure
+  command: "./configure --with-nagios-group=nagios --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make all
+  command: "make all"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make install
+  command: "make install"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make install-init
+  command: "make install-init"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make install-commandmode
+  command: "make install-commandmode"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make install-config
+  command: "make install-config"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- name: run make install-webconf
+  command: "make install-webconf"
+  args:
+    chdir: "{{nagios_core_dir}}"
+
+- apache2_module:
+    state: present
+    name: rewrite
+  notify: apache2 restart
+
+- apache2_module:
+    state: present
+    name: cgi
+  notify: apache2 restart

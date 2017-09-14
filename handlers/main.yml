@@ -1,4 +1,3 @@
-- name: prometheus restart
-  service:
-    name: prometheus
-    state: restarted
+# nothing yet
+- name: apache2 restart
+  service: state=restarted name=apache2
