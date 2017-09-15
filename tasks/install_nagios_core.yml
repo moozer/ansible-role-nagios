@@ -11,7 +11,7 @@
     - gcc
     - libc6
     - make
-    - libgd2-xpm-dev
+    - libgd-dev
 
 - name: download tarball
   connection: local
