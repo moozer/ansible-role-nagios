@@ -1,0 +1,10 @@
+# services related to host_group {{ item }}
+
+{% for service,command in hostvars[groups[item][0]].nagios_tests.items() %}
+define service{
+    use                   generic-service         ; Name of service template to use
+    hostgroup_name        {{item}}
+    service_description   {{service}}
+    check_command			    {{command}}
+}
+{% endfor %}

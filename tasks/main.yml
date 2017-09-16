@@ -15,3 +15,7 @@
 
 - name: start nagios
   systemd: name=nagios state=started
+
+- name: update host stuff
+  include: update_hosts.yml
+  tags: nagios_update_hosts
