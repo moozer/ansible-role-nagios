@@ -1,9 +1,18 @@
 - debug: msg="updating host monitoring"
 
+- debug: msg="{{hostvars['nagios01']}}"
+
 - name: add services by groups
   template:
     src: host_group_services.cfg.j2
     dest: "/usr/local/nagios/etc/ansible-hosts/host_group_{{ item }}.cfg"
   when: (item not in 'all') and (groups[item] | count > 0)
   with_items: "{{groups}}"
+  notify: reload nagios
+
+- name: add hosts
+  template:
+    src: host_services.cfg.j2
+    dest: "/usr/local/nagios/etc/ansible-hosts/host_{{ item }}.cfg"
+  with_items: "{{groups['all']}}"
   notify: reload nagios

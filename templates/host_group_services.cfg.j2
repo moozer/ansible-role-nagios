@@ -1,3 +1,10 @@
+# hosts in group {{ item }}
+
+define hostgroup{
+        hostgroup_name  {{ item }}
+        members         {{groups[item]|join(', ')}}
+}
+
 # services related to host_group {{ item }}
 
 {% for service,command in hostvars[groups[item][0]].nagios_tests.items() %}
