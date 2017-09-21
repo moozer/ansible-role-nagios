@@ -25,7 +25,7 @@
     url: "https://github.com/nagios-plugins/nagios-plugins/archive/{{ nagios_plugins_tgz_filename }}"
     dest: "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
 
-- name: "Extract into {{nagios_plugins_tgz_filename}} to {{ nagios_dir }}"
+- name: "Extract into {{nagios_plugins_tgz_filename}} to {{ nagios_opt_dir }}"
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
