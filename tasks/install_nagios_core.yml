@@ -70,6 +70,15 @@
     mode: 0640
   notify: apache2 restart
 
+- name: create nagios config file
+  template:
+    src: nagios.cfg.j2
+    dest: /usr/local/nagios/etc/nagios.cfg
+    group: nagios
+    owner: nagios
+    mode: 0664
+  notify: reload nagios
+
 - name: enable nagios as service
   systemd:
     name: nagios

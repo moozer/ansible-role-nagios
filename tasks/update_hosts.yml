@@ -2,7 +2,7 @@
   file:
     path: "{{nagios_tests_dir}}"
     state: directory
-    mode: 0660
+    mode: 0775
     owner: nagios
     group: nagios
 
@@ -10,6 +10,9 @@
   template:
     src: host_group_services.cfg.j2
     dest: "{{nagios_tests_dir}}/host_group_{{ item }}.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
   when: (item not in ['all', 'ungrouped']) and (groups[item] | count > 0)
   with_items: "{{groups}}"
   notify: reload nagios
@@ -18,5 +21,8 @@
   template:
     src: host_services.cfg.j2
     dest: "{{nagios_tests_dir}}/host_{{ item }}.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
   with_items: "{{groups['all']}}"
   notify: reload nagios
