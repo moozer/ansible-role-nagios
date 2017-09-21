@@ -25,6 +25,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # and do provisioning
     serverB.vm.provision "ansible" do |ansible|
       ansible.playbook = "test.yml"
+      ansible.groups = {
+            "servers" => ["srv-mon"]
+      }
     end
   end
 
