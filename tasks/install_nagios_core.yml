@@ -26,8 +26,6 @@
     dest: "{{ nagios_opt_dir }}"
   register: core_extract
 
-- debug: var=core_extract
-
 - name: run configure
   command: "./configure --with-nagios-group=nagios --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/"
   args:
