@@ -12,7 +12,6 @@
 
 - hosts: srv-mon
   become: true
-  #become_method: su
 
   pre_tasks:
   - name: update apt if applicable
@@ -20,6 +19,18 @@
       update_cache: yes
       cache_valid_time: 3600
     changed_when: False
+
+  - name: set hostname
+    hostname:
+      name: "{{ ansible_hostname }}"
+
+  - name: update hosts file
+    template:
+      src: etc_hosts.j2
+      dest: /etc/hosts
+      mode: 0644
+      owner: root
+      group: root
 
   roles:
   - { role: server-nagios }
