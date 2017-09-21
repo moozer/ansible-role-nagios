@@ -13,6 +13,8 @@ nagios_plugins_version: "2.2.1"
 nagios_plugins_tgz_filename: "release-{{ nagios_plugins_version }}.tar.gz"
 nagios_plugins_dir: "{{nagios_opt_dir}}/nagios-plugins-release-{{nagios_plugins_version}}"
 
+nagios_tests_dir: /usr/local/nagios/etc/ansible-hosts
+
 # # Default nagios host_group tests
 # nagios_tests:
 #   ping: "check_ping!100.0,20%!500.0,60%"

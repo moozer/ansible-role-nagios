@@ -1,7 +1,15 @@
+- name: create directory for tests
+  file:
+    path: "{{nagios_tests_dir}}"
+    state: directory
+    mode: 0660
+    owner: nagios
+    group: nagios
+
 - name: add services by groups
   template:
     src: host_group_services.cfg.j2
-    dest: "/usr/local/nagios/etc/ansible-hosts/host_group_{{ item }}.cfg"
+    dest: "{{nagios_tests_dir}}/host_group_{{ item }}.cfg"
   when: (item not in ['all', 'ungrouped']) and (groups[item] | count > 0)
   with_items: "{{groups}}"
   notify: reload nagios
@@ -9,6 +17,6 @@
 - name: add hosts
   template:
     src: host_services.cfg.j2
-    dest: "/usr/local/nagios/etc/ansible-hosts/host_{{ item }}.cfg"
+    dest: "{{nagios_tests_dir}}/host_{{ item }}.cfg"
   with_items: "{{groups['all']}}"
   notify: reload nagios
