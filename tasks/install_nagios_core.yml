@@ -24,41 +24,51 @@
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
+  register: core_extract
+
+- debug: var=core_extract
 
 - name: run configure
   command: "./configure --with-nagios-group=nagios --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make all
   command: "make all"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make install
   command: "make install"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make install-init
   command: "make install-init"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make install-commandmode
   command: "make install-commandmode"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make install-config
   command: "make install-config"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: run make install-webconf
   command: "make install-webconf"
   args:
     chdir: "{{nagios_core_dir}}"
+  when: core_extract.changed
 
 - name: setup password for nagios admin
   htpasswd:
