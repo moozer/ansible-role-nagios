@@ -29,24 +29,29 @@
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
+  register: plugins_extract
 
 - name: run setup tool
   command: "./tools/setup"
   args:
     chdir: "{{nagios_plugins_dir}}"
+  when: plugins_extract.changed
 
 - name: run configure
   command: "./configure"
   args:
     chdir: "{{nagios_plugins_dir}}"
+  when: plugins_extract.changed
 
 - name: run make
   command: "make"
   args:
     chdir: "{{nagios_plugins_dir}}"
+  when: plugins_extract.changed
 
 - name: run make install
   command: "make install"
   args:
     chdir: "{{nagios_plugins_dir}}"
   notify: reload nagios
+  when: plugins_extract.changed
