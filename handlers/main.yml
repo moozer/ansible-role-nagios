@@ -6,3 +6,4 @@
   systemd:
     name: nagios
     state: reloaded
+    daemon_reload: yes
