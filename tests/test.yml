@@ -34,3 +34,14 @@
 
   roles:
   - { role: server-nagios }
+
+# ---
+- hosts: srv-test
+
+  tasks:
+  - name: wait for server to be ready
+    wait_for: host={{hostvars['srv-mon']["ansible_ssh_host"]}} port=80
+
+  - name: check for nagios webpage asking for password
+    action: uri url=http://{{hostvars['srv-mon']["ansible_ssh_host"]}}/nagios return_content=yes status_code=401
+    register: webpage
