@@ -14,6 +14,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
   end
 
+  # server is a debian 9 machine - the nagios server
+  config.vm.define "srv-mon" do |serverB|
+    serverB.vm.box = "debian/stretch64"
+    serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
+  end
+
   # test machine is a debian 9 box that is to be m - the nagios server
   config.vm.define "srv-test" do |serverB|
     serverB.vm.box = "debian/stretch64"
@@ -30,11 +36,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # end
   end
 
-  # server is a debian 9 machine - the nagios server
-  config.vm.define "srv-mon" do |serverB|
-    serverB.vm.box = "debian/stretch64"
-    serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
-  end
 
   # start this on the localhost, not a remote kvm host
   config.vm.provider :libvirt do |libvirt|
