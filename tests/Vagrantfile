@@ -6,30 +6,36 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # # machine #1 a debian 8 machine
-  # config.vm.define "serverA" do |server|
-  #   server.vm.box = "debian/stretch64"
-  #   server.vm.synced_folder "shared", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false
-  #
-  #   # and do provisioning
-  #   server.vm.provision "ansible" do |ansible|
-  #     ansible.playbook = "test.yml"
-  #   end
-  # end
+  # and do provisioning
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "test.yml"
+    ansible.groups = {
+          "servers" => ["srv-mon", "srv-test"]
+    }
+  end
 
-  # machine #2 a debian 8 machine - the logserver
+  # server is a debian 9 machine - the nagios server
   config.vm.define "srv-mon" do |serverB|
     serverB.vm.box = "debian/stretch64"
     serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
-
-    # and do provisioning
-    serverB.vm.provision "ansible" do |ansible|
-      ansible.playbook = "test.yml"
-      ansible.groups = {
-            "servers" => ["srv-mon"]
-      }
-    end
   end
+
+  # test machine is a debian 9 box that is to be m - the nagios server
+  config.vm.define "srv-test" do |serverB|
+    serverB.vm.box = "debian/stretch64"
+    serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
+
+    # provisioned as part og the nagios server
+
+    # # and do provisioning
+    # serverB.vm.provision "ansible" do |ansible|
+    #   ansible.playbook = "test.yml"
+    #   ansible.groups = {
+    #         "servers" => ["srv-mon", "srv-test"]
+    #   }
+    # end
+  end
+
 
   # start this on the localhost, not a remote kvm host
   config.vm.provider :libvirt do |libvirt|

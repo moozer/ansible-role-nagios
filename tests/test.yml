@@ -13,7 +13,17 @@
 - hosts: srv-mon
   become: true
 
+  vars:
+    srv_mon_done_file: srv_mon_done
+
   pre_tasks:
+  - name: removed status file, if existing
+    connection: local
+    become: false
+    file:
+      path: "{{srv_mon_done_file}}"
+      state: absent
+
   - name: update apt if applicable
     apt:
       update_cache: yes
@@ -34,3 +44,30 @@
 
   roles:
   - { role: server-nagios }
+
+  tasks:
+  - name: create status file
+    connection: local
+    become: false
+    file:
+      path: "{{srv_mon_done_file}}"
+      state: touch
+
+# ---
+- hosts: srv-test
+
+  vars:
+    srv_mon_done_file: srv_mon_done
+
+  tasks:
+  - name: wait for server to be ready
+    wait_for: host={{hostvars['srv-mon']["ansible_ssh_host"]}} port=80
+
+  - name: wait for srv-mon to finish provisioning
+    connection: local
+    wait_for:
+      path: "{{srv_mon_done_file}}"
+      timeout: 600
+      
+  - name: check for nagios webpage asking for password
+    action: uri url=http://{{hostvars['srv-mon']["ansible_ssh_host"]}}/nagios return_content=yes status_code=401
