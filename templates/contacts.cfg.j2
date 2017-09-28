@@ -1,5 +1,19 @@
 # list of contacts to be used for notifications
 
+define contact {
+  contact_name     {{nagios_admin_contact.name}}
+  use	             generic-contact
+  alias            Nagios Admin
+  email            {{nagios_admin_contact.mail}}
+}
+
+define contactgroup {
+        contactgroup_name       admins
+        alias                   Nagios Administrators
+        members                 nagiosadmin
+}
+
+
 {% for c in nagios_contacts %}
 define contact {
   contact_name     {{c.name}}
