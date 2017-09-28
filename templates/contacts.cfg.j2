@@ -7,6 +7,12 @@ define contact {
   email            {{nagios_admin_contact.mail}}
 }
 
+define contactgroup {
+        contactgroup_name       admins
+        alias                   Nagios Administrators
+        members                 nagiosadmin
+}
+
 
 {% for c in nagios_contacts %}
 define contact {
