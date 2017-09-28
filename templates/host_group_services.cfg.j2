@@ -7,7 +7,7 @@ define hostgroup{
 
 # services related to host_group {{ item }}
 
-{% for service,command in hostvars[groups[item][0]].nagios_tests.items() %}
+{% for service,command in hostvars[groups[item][0]].nagios_group_tests.items() %}
 define service{
     use                   generic-service         ; Name of service template to use
     hostgroup_name        {{item}}

@@ -1,0 +1,6 @@
+nagios_group_contacts:
+  - srv_mon_owner
+
+nagios_group_tests:
+  ping: "check_ping!100.0,20%!500.0,60%"
+  ssh: check_ssh

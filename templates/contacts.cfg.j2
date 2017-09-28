@@ -1,0 +1,9 @@
+# list of contacts to be used for notifications
+
+{% for c in nagios_contacts %}
+define contact {
+  contact_name     {{c.name}}
+  use	             generic-contact
+  email            {{c.mail}}
+}
+{% endfor %}

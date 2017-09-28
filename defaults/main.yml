@@ -16,6 +16,9 @@ nagios_plugins_dir: "{{nagios_opt_dir}}/nagios-plugins-release-{{nagios_plugins_
 nagios_tests_dir: /usr/local/nagios/etc/ansible-hosts
 
 # # Default nagios host_group tests
-# nagios_tests:
+# nagios_group_tests:
 #   ping: "check_ping!100.0,20%!500.0,60%"
 #   ssh: check_ssh
+
+nagios_admin_mail: nagios@localhost
+nagios_admin_pager: nagiospager@localhost

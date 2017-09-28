@@ -1,0 +1,6 @@
+# contact group for {{ item }}
+
+define contactgroup{
+        contactgroup_name       {{ item }}
+        members                 {{ hostvars[groups[item][0]].nagios_group_contacts |join(', ') }}
+}
