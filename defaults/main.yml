@@ -19,3 +19,6 @@ nagios_tests_dir: /usr/local/nagios/etc/ansible-hosts
 # nagios_tests:
 #   ping: "check_ping!100.0,20%!500.0,60%"
 #   ssh: check_ssh
+
+nagios_admin_mail: nagios@localhost
+nagios_admin_pager: nagiospager@localhost
