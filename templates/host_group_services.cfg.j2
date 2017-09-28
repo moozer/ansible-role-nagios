@@ -13,5 +13,6 @@ define service{
     hostgroup_name        {{item}}
     service_description   {{service}}
     check_command			    {{command}}
+    contact_groups  {{ item }}
 }
 {% endfor %}
