@@ -6,6 +6,15 @@
     owner: nagios
     group: nagios
 
+- name: add contacts
+  template:
+    src: contacts.cfg.j2
+    dest: "{{nagios_tests_dir}}/contacts.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
+  notify: reload nagios
+
 - name: add services by groups
   template:
     src: host_group_services.cfg.j2
