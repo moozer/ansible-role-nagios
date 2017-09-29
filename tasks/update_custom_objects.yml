@@ -1,0 +1,7 @@
+- name: create directory for custom_objects
+  file:
+    path: "{{nagios_custom_dir}}"
+    state: directory
+    mode: 0775
+    owner: nagios
+    group: nagios
