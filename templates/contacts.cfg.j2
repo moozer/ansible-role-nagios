@@ -5,6 +5,10 @@ define contact {
   use	             generic-contact
   alias            Nagios Admin
   email            {{nagios_admin_contact.mail}}
+
+  service_notification_commands   notify-service-by-{{nagios_admin_contact.notify | join(", notify-service-by-")}}
+  host_notification_commands      notify-host-by-{{nagios_admin_contact.notify | join(", notify-host-by-")}}
+
 }
 
 define contactgroup {
@@ -13,11 +17,21 @@ define contactgroup {
         members                 nagiosadmin
 }
 
-
 {% for c in nagios_contacts %}
 define contact {
   contact_name     {{c.name}}
   use	             generic-contact
   email            {{c.mail}}
+
+  {% if c.notify  %}
+  service_notification_commands   notify-service-by-{{c.notify | join(", notify-service-by-")}}
+  host_notification_commands      notify-host-by-{{c.notify | join(", notify-host-by-")}}
+  {% else %}
+  {% if c.email %}
+  service_notification_commands   notify-service-by-email}}
+  host_notification_commands      notify-host-by-email}}
+  {% endif %}
+  {% endif %}
+
 }
 {% endfor %}
