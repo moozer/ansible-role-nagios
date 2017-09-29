@@ -1,2 +1,7 @@
+nagios_admin_contact:
+  name: nagiosadmin
+  mail: nagios@localhost
+  pager: nagiospager@localhost
+
 nagios_contacts:
   - { name: srv_mon_owner, mail: srv_mon_owner@localhost }
