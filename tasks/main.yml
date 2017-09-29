@@ -10,8 +10,12 @@
   include: install_nagios_plugins.yml
   tags: nagios_plugins
 
-- name: update host stuff
+- name: update ansible defined config
   include: update_hosts.yml
+  tags: nagios_update_hosts
+
+- name: update customconfig
+  include: update_custom_objects.yml
   tags: nagios_update_hosts
 
 - name: start nagios

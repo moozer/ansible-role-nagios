@@ -15,6 +15,7 @@ nagios_plugins_dir: "{{nagios_opt_dir}}/nagios-plugins-release-{{nagios_plugins_
 
 nagios_base_dir: /usr/local/nagios
 nagios_tests_dir: "{{nagios_base_dir}}/etc/ansible-hosts"
+nagios_custom_dir: "{{nagios_base_dir}}/etc/custom-objects"
 
 # # Default nagios host_group tests
 # nagios_group_tests:
