@@ -28,6 +28,10 @@ Design decisions
 
     Proper emailing must be set up on the system, e.g using `dpkg-reconfigure exim4-config`
 
+* notification is specified per contact
+
+    Default is to use email. A notify list containing X, Y and Z gets converted to `notify-host-by-X`, `notify-host-by-Y` and `notify-host-by-Z`, which must exist, probably defined in `custom-objects`.
+
 * configurations are split into default, ansible and non-ansible.
 
     The configuration is default in `/usr/local/nagios/etc`. Main config file is `nagios.cfg` (ansible controlled) and the subdirectories contains other config.
@@ -78,18 +82,26 @@ otherhost
 
 `group_vars/all.yml` or `group_vars/all/nagios.yml`
 
-* define the users that will be referenced in notificaitons
+* define the users that will be referenced in notifications
 * define contact info for the default nagiosadmin user
+* Both users A and B will be botified by `email` (since it is default), and `userA` will also be notified using `othermean`.
 
 ```
 nagios_contacts:
-  - { name: userA, mail: userA@somewhere }
-  - { name: userB, mail: userB@somewhere }
+  - name: userA
+    mail: userA@somewhere
+    notify:
+    - email
+    - othermean
+  - name: userB
+    mail: userB@somewhere
 
 nagios_admin_contact:
   name: nagiosadmin
   mail: nagios@somewhere
   pager: nagiospager@somewhere
+  notify:
+  - email
 
 ```
 
