@@ -9,6 +9,7 @@ nagios_core_dir: "{{nagios_opt_dir}}/nagioscore-nagios-{{nagios_version}}"
 nagios_admin_user: nagiosadmin
 nagios_admin_pass: nagiosadmin
 
+# downalod and install plugins
 nagios_plugins_version: "2.2.1"
 nagios_plugins_tgz_filename: "release-{{ nagios_plugins_version }}.tar.gz"
 nagios_plugins_dir: "{{nagios_opt_dir}}/nagios-plugins-release-{{nagios_plugins_version}}"
@@ -17,11 +18,12 @@ nagios_base_dir: /usr/local/nagios
 nagios_tests_dir: "{{nagios_base_dir}}/etc/ansible-hosts"
 nagios_custom_dir: "{{nagios_base_dir}}/etc/custom-objects"
 
-# # Default nagios host_group tests
-# nagios_group_tests:
-#   ping: "check_ping!100.0,20%!500.0,60%"
-#   ssh: check_ssh
+# groups not to use as nagios groups
+nagios_group_exclude_list:
+  - all
+  - ungrouped
 
+# contacts definitions
 nagios_host_owner: nagiosadmin
 nagios_admin_contact:
   name: nagiosadmin
@@ -30,6 +32,10 @@ nagios_admin_contact:
   notify:
     - email
 
-nagios_group_exclude_list:
-  - all
-  - ungrouped
+# -- must go in group_Vars or host_vars
+# # Default nagios host_group tests
+# nagios_group_tests:
+#   ping: "check_ping!100.0,20%!500.0,60%"
+#   ssh: check_ssh
+#
+# nagios_exclude_group: False
