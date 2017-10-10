@@ -29,3 +29,7 @@ nagios_admin_contact:
   pager: nagiospager@localhost
   notify:
     - email
+
+nagios_group_exclude:
+  - all
+  - ungrouped

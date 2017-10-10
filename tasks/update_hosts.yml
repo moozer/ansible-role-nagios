@@ -22,7 +22,8 @@
     group: nagios
     owner: nagios
     mode: 0664
-  when: (item not in ['all', 'ungrouped']) and (groups[item] | count > 0)
+  when: (groups[item] | count > 0)
+        and (item not in nagios_group_exclude)
   with_items: "{{groups}}"
   notify: reload nagios
 
@@ -33,7 +34,8 @@
     group: nagios
     owner: nagios
     mode: 0664
-  when: (item not in ['all', 'ungrouped']) and (groups[item] | count > 0)
+  when: (groups[item] | count > 0)
+        and (item not in nagios_group_exclude)
   with_items: "{{groups}}"
   notify: reload nagios
 
