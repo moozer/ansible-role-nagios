@@ -30,6 +30,6 @@ nagios_admin_contact:
   notify:
     - email
 
-nagios_group_exclude:
+nagios_group_exclude_list:
   - all
   - ungrouped

@@ -23,7 +23,7 @@
     owner: nagios
     mode: 0664
   when: (groups[item] | count > 0)
-        and (item not in nagios_group_exclude)
+        and (item not in nagios_group_exclude_list)
   with_items: "{{groups}}"
   notify: reload nagios
 
@@ -35,7 +35,7 @@
     owner: nagios
     mode: 0664
   when: (groups[item] | count > 0)
-        and (item not in nagios_group_exclude)
+        and (item not in nagios_group_exclude_list)
   with_items: "{{groups}}"
   notify: reload nagios
 
