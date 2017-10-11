@@ -20,8 +20,12 @@
 
 - name: built list of allowed groups
   set_fact:
-    host_group_files_allowed: "{{host_group_result.results|rejectattr('path', 'undefined')|map(attribute='path')|list}}"
-
+    host_group_files_allowed: "{{host_group_result.results
+                                        |rejectattr('invocation', 'undefined')
+                                        |map(attribute='invocation')
+                                        |map(attribute='module_args')
+                                        |map(attribute='dest')|list}}"
+                                        
 - name: remove stale host_group files
   file:
     state: absent

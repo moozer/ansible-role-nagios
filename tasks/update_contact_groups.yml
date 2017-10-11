@@ -20,7 +20,11 @@
 
 - name: built list of allowed groups
   set_fact:
-    contact_groups_files_allowed: "{{contact_groups_result.results|rejectattr('path', 'undefined')|map(attribute='path')|list}}"
+    contact_groups_files_allowed: "{{contact_groups_result.results
+                                    |rejectattr('invocation', 'undefined')
+                                    |map(attribute='invocation')
+                                    |map(attribute='module_args')
+                                    |map(attribute='dest')|list}}"
 
 - name: remove stale contact_groups files
   file:
