@@ -1,0 +1,30 @@
+- name: add services by groups
+  template:
+    src: host_group_services.cfg.j2
+    dest: "{{nagios_tests_dir}}/host_group_{{ item }}.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
+  when: (groups[item] | count > 0)
+        and (item not in nagios_group_exclude_list)
+        and not hostvars[groups[item][0]].nagios_exclude_group
+  with_items: "{{groups}}"
+  register: host_group_result
+  notify: reload nagios
+
+- name: find host_group files
+  find:
+    paths: "{{nagios_tests_dir}}"
+    patterns: "host_group_*.cfg"
+  register: host_group_files
+
+- name: built list of allowed groups
+  set_fact:
+    host_group_files_allowed: "{{host_group_result.results|rejectattr('path', 'undefined')|map(attribute='path')|list}}"
+
+- name: remove stale host_group files
+  file:
+    state: absent
+    path: "{{item}}"
+  with_items: "{{host_group_files.files|map(attribute='path')|list}}"
+  when: item not in host_group_files_allowed
