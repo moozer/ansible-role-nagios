@@ -5,42 +5,34 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # servers to work with
+  servers = ["srv-mon", "srv-test", "otherserver"]
 
-  # and do provisioning
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "test.yml"
-    ansible.groups = {
-          "servers" => ["srv-mon", "srv-test"]
-    }
-  end
-
-  # server is a debian 9 machine - the nagios server
-  config.vm.define "srv-mon" do |serverB|
-    serverB.vm.box = "debian/stretch64"
-    serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
-  end
-
-  # test machine is a debian 9 box that is to be m - the nagios server
-  config.vm.define "srv-test" do |serverB|
-    serverB.vm.box = "debian/stretch64"
-    serverB.vm.synced_folder "shared", "/vagrant", type: "9p"
-
-    # provisioned as part og the nagios server
-
-    # # and do provisioning
-    # serverB.vm.provision "ansible" do |ansible|
-    #   ansible.playbook = "test.yml"
-    #   ansible.groups = {
-    #         "servers" => ["srv-mon", "srv-test"]
-    #   }
-    # end
-  end
-
+  # set come vm options
+  config.vm.box = "debian/stretch64"
+  config.vm.synced_folder "shared", "/vagrant", type: "9p"
 
   # start this on the localhost, not a remote kvm host
   config.vm.provider :libvirt do |libvirt|
     libvirt.host = ""
     libvirt.memory = 1024
   end
+
+  # define provisioning
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "test.yml"
+    ansible.groups = {
+          "servers" => ["srv-mon", "srv-test"],
+          "others"  => ["otherserver"]
+    }
+  end
+
+  # spin up servers
+  servers.each do |server_name|
+    config.vm.define server_name do |machine|
+          machine.vm.hostname = server_name
+    end
+  end
+
 
 end
