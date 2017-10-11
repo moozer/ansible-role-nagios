@@ -1,0 +1,30 @@
+- name: add contact groups
+  template:
+    src: contact_groups.cfg.j2
+    dest: "{{nagios_tests_dir}}/contact_groups_{{item}}.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
+  when: (groups[item] | count > 0)
+        and (item not in nagios_group_exclude_list)
+        and not hostvars[groups[item][0]].nagios_exclude_group
+  with_items: "{{groups}}"
+  register: contact_groups_result
+  notify: reload nagios
+
+- name: find contact_groups files
+  find:
+    paths: "{{nagios_tests_dir}}"
+    patterns: "contact_groups_*.cfg"
+  register: contact_groups_files
+
+- name: built list of allowed groups
+  set_fact:
+    contact_groups_files_allowed: "{{contact_groups_result.results|rejectattr('path', 'undefined')|map(attribute='path')|list}}"
+
+- name: remove stale contact_groups files
+  file:
+    state: absent
+    path: "{{item}}"
+  with_items: "{{contact_groups_files.files|map(attribute='path')|list}}"
+  when: item not in contact_groups_files_allowed

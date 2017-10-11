@@ -15,19 +15,6 @@
     mode: 0664
   notify: reload nagios
 
-- name: add contact groups
-  template:
-    src: contact_groups.cfg.j2
-    dest: "{{nagios_tests_dir}}/contact_groups_{{item}}.cfg"
-    group: nagios
-    owner: nagios
-    mode: 0664
-  when: (groups[item] | count > 0)
-        and (item not in nagios_group_exclude_list)
-        and not hostvars[groups[item][0]].nagios_exclude_group
-  with_items: "{{groups}}"
-  notify: reload nagios
-
 - name: add hosts
   template:
     src: host_services.cfg.j2

@@ -14,8 +14,12 @@
   include: update_hosts.yml
   tags: nagios_update_hosts
 
-- name: update ansible defined config
+- name: update ansible defined host_groups
   include: update_host_groups.yml
+  tags: nagios_update_hosts
+
+- name: update ansible defined contact_groups
+  include: update_contact_groups.yml
   tags: nagios_update_hosts
 
 - name: update customconfig
