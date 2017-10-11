@@ -50,17 +50,21 @@ See `tests` directory for details
 
 * In the example the nagiosserver is called `nagioshost` and there is another host called `otherhost`
 
-`inventory`
 
-* the two servers are both in the `servers` group
+#### `inventory`
+
+* the two servers are in the `servers` group and one in the `otherservers` group
 
 ```
 [servers]
 nagioshost
-otherhost
+otherhostA
+
+[otherservers]
+otherhostB
 ```
 
-`playbook.yml`
+#### `playbook.yml`
 
 * in the playbook we define how to provision
 
@@ -70,7 +74,7 @@ otherhost
   roles:
   - { role: server-nagios }
 
-- hosts: otherhost
+- hosts: otherhost?
 
   roles:
   - {}
@@ -78,9 +82,9 @@ otherhost
 
 ### Defining variables for the host groups
 
-* one group called `servers`
+* one group called `servers` and another called `otherservers`
 
-`group_vars/all.yml` or `group_vars/all/nagios.yml`
+#### `group_vars/all.yml` or `group_vars/all/nagios.yml`
 
 * define the users that will be referenced in notifications
 * define contact info for the default nagiosadmin user
@@ -105,7 +109,7 @@ nagios_admin_contact:
 
 ```
 
-`group_vars/servers.yml` or `group_vars/servers/nagios.yml`
+#### `group_vars/servers.yml` or `group_vars/servers/nagios.yml`
 
 * define who should be notified when something happens
 * define the tests that are to be used for all groups. The text writeen will be used directly as check command. See the nagios documentation for [details](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/plugins.html).
@@ -121,14 +125,24 @@ nagios_group_tests:
   ssh: check_ssh
 ```
 
+#### `group_vars/otherservers.yml` or `group_vars/otherservers/nagios.yml`
+
+* the group `otherservers` are not to be included in nagios
+* hosts in the groups will, unless something else is defined in hostvars, be excluded from nagios.
+
+
+```
+nagios_exclude_group: True
+nagios_exclude_host: True
+```
+
 ### Defining for the hosts
 
 * host specific tests are not implemented yet
 
-`host_vars/nagioshost.yml` or `host_vars/nagioshost/nagios.yml`
+#### `host_vars/nagioshost.yml` or `host_vars/nagioshost/nagios.yml`
 
 * `userA` is the owner and will be notified. Default owner is `nagiosadmin`.
-*
 
 ```
 nagios_host_owner: userA
