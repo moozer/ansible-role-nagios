@@ -20,5 +20,6 @@ nagios_group_tests:
   ssh: check_ssh
 
 nagios_exclude_group: False
+nagios_exclude_host: False
 
 nagios_host_owner: nagiosadmin
