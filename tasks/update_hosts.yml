@@ -15,8 +15,6 @@
     mode: 0664
   notify: reload nagios
 
-- debug: var=groups['all']
-
 - name: add hosts
   template:
     src: host_services.cfg.j2
