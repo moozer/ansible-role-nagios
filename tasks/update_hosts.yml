@@ -15,12 +15,13 @@
     mode: 0664
   notify: reload nagios
 
+- debug: var=groups['all']
+
 - name: add hosts
   template:
     src: host_services.cfg.j2
-    dest: "{{nagios_tests_dir}}/host_{{ item }}.cfg"
+    dest: "{{nagios_tests_dir}}/hosts.cfg"
     group: nagios
     owner: nagios
     mode: 0664
-  with_items: "{{groups['all']}}"
   notify: reload nagios
