@@ -23,3 +23,12 @@
     owner: nagios
     mode: 0664
   notify: reload nagios
+
+- name: add localhost checks
+  template:
+    src: localhost_checks.cfg.j2
+    dest: "{{nagios_tests_dir}}/localhost.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
+  notify: reload nagios
