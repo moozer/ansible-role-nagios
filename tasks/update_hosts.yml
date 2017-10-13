@@ -31,4 +31,5 @@
     group: nagios
     owner: nagios
     mode: 0664
+  when: nagios_localhost_check
   notify: reload nagios
