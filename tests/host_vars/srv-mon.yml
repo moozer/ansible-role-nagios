@@ -1,1 +1,2 @@
 nagios_host_owner: srv_mon_owner
+nagios_localhost_check_swap: False
