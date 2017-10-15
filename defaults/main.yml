@@ -39,6 +39,8 @@ nagios_admin_contact:
 #   ssh: check_ssh
 #
 # nagios_exclude_group: False
+# nagios_host_checks:
+#   ping2: "check_ping!100.0,20%!500.0,60%"
 
 nagios_localhost_check: True
 nagios_localhost_check_swap: True

@@ -2,7 +2,9 @@
 
 {% for host in groups['all'] %}
 
+#
 # host {{ host }}
+#
 {% if hostvars[host].nagios_exclude_host %}
 # host excluded
 # (nagios_exclude_host is set to True)
@@ -12,12 +14,12 @@
 {% else %}
 {% for service,command in hostvars[host].nagios_host_checks.items() %}
 define service{
-    use                   generic-service         ; Name of service template to use
-    hostgroup_name        {{item}}
-    service_description   {{service}}
-    check_command			    {{command}}
-    contact_groups  {{ item }}
+  use         generic-service         ; Name of service template to use
+  host_name		{{host}}
+	service_description	{{service}}
+	check_command		{{command}}
 }
 {% endfor %}
 {% endif %}
+
 {% endfor %}
