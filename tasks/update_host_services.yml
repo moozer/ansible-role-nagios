@@ -1,0 +1,8 @@
+- name: add host services
+  template:
+    src: host_services.cfg.j2
+    dest: "{{nagios_tests_dir}}/hosts_services.cfg"
+    group: nagios
+    owner: nagios
+    mode: 0664
+  notify: reload nagios

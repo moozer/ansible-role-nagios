@@ -1,0 +1,2 @@
+nagios_host_checks:
+  ping2: "check_ping!100.0,20%!500.0,60%"

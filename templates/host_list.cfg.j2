@@ -1,0 +1,18 @@
+# creating global file for all ansible hosts
+
+{% for host in groups['all'] %}
+
+# host {{ host }}
+{% if hostvars[host].nagios_exclude_host %}
+# host excluded (nagios_exclude_host is set to True)
+{% else %}
+define host{
+        use          linux-server            ; Name of host template to use
+							; This host definition will inherit all variables that are defined
+							; in (or inherited by) the linux-server host template definition.
+        host_name    {{host}}
+        contacts     {{hostvars[host].nagios_host_owner}}
+        }
+
+{% endif %}
+{% endfor %}
