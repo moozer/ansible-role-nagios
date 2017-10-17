@@ -1,4 +1,23 @@
-# creating global file for all ansible hosts
+# creating global file for all ansible hosts and the default host parameters
+
+# Linux host definition template - This is NOT a real host, just a template!
+
+define host{
+        name                            default-ansible-host
+        use                             generic-host
+        check_period                    24x7
+        check_interval                  5  ; in minutes
+        retry_interval                  1  ; in minutes
+        max_check_attempts              10
+        check_command                   check-host-alive
+        notification_period             24x7
+        notification_interval           30              ; in minutes
+        notification_options            d,u,r,f,s  ; all states
+        contact_groups                  admins
+        register                        0
+        }
+
+
 
 {% for host in groups['all'] %}
 
@@ -7,11 +26,10 @@
 # host excluded (nagios_exclude_host is set to True)
 {% else %}
 define host{
-        use          linux-server            ; Name of host template to use
-							; This host definition will inherit all variables that are defined
-							; in (or inherited by) the linux-server host template definition.
-        host_name    {{host}}
-        contacts     {{hostvars[host].nagios_host_owner}}
+        use           default-ansible-host
+        host_name     {{host}}
+        contacts      {{hostvars[host].nagios_host_owner}}
+        notes         Nagios config by ansible
         }
 
 {% endif %}
