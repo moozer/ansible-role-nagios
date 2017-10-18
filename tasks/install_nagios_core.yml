@@ -20,53 +20,70 @@
     url: https://github.com/NagiosEnterprises/nagioscore/archive/{{nagios_tgz_filename}}
     dest: "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
 
+- name: calculate hash
+  connection: local
+  become: no
+  stat:
+    path: "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
+    checksum: sha256
+  register: nagios_core_stat
+
+- name: store checksum
+  template:
+    src: checksum.txt.j2
+    dest: "{{ nagios_opt_dir }}/nagios_core_checksum.txt"
+  vars:
+      checksum: nagios_core_stat.stat.checksum
+  register: nagios_core_checksum_file
+
 - name: Extract into {{ nagios_tgz_filename }} to {{ nagios_opt_dir }}
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
   register: core_extract
+  when: nagios_core_checksum_file.changed
 
 - name: run configure
   command: "./configure --with-nagios-group=nagios --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make all
   command: "make all"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make install
   command: "make install"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make install-init
   command: "make install-init"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make install-commandmode
   command: "make install-commandmode"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make install-config
   command: "make install-config"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or core_extract.changed
 
 - name: run make install-webconf
   command: "make install-webconf"
   args:
     chdir: "{{nagios_core_dir}}"
-  when: core_extract.changed
+  when: nagios_core_checksum_file.changed or  core_extract.changed
 
 - name: setup password for nagios admin
   htpasswd:
