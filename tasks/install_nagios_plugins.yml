@@ -25,33 +25,50 @@
     url: "https://github.com/nagios-plugins/nagios-plugins/archive/{{ nagios_plugins_tgz_filename }}"
     dest: "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
 
+- name: calculate hash
+  connection: local
+  become: no
+  stat:
+    path: "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
+    checksum: sha256
+  register: nagios_plugins_stat
+
+- name: store checksum
+  template:
+    src: checksum.txt.j2
+    dest: "{{ nagios_opt_dir }}/nagios_plugins_checksum.txt"
+  vars:
+      checksum: nagios_plugins_stat.stat.checksum
+  register: nagios_plugins_checksum_file
+
 - name: "Extract into {{nagios_plugins_tgz_filename}} to {{ nagios_opt_dir }}"
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_plugins_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
   register: plugins_extract
+  when: nagios_plugins_checksum_file.changed
 
 - name: run setup tool
   command: "./tools/setup"
   args:
     chdir: "{{nagios_plugins_dir}}"
-  when: plugins_extract.changed
+  when: nagios_plugins_checksum_file.changed or plugins_extract.changed
 
 - name: run configure
   command: "./configure"
   args:
     chdir: "{{nagios_plugins_dir}}"
-  when: plugins_extract.changed
+  when: nagios_plugins_checksum_file.changed or plugins_extract.changed
 
 - name: run make
   command: "make"
   args:
     chdir: "{{nagios_plugins_dir}}"
-  when: plugins_extract.changed
+  when: nagios_plugins_checksum_file.changed or plugins_extract.changed
 
 - name: run make install
   command: "make install"
   args:
     chdir: "{{nagios_plugins_dir}}"
   notify: reload nagios
-  when: plugins_extract.changed
+  when: nagios_plugins_checksum_file.changed or plugins_extract.changed
