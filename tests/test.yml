@@ -12,6 +12,7 @@
 
 - hosts: srv-mon
   become: true
+  gather_facts: false
 
   vars:
     srv_mon_done_file: srv_mon_done
@@ -55,6 +56,7 @@
 
 # ---
 - hosts: srv-test
+  gather_facts: false
 
   vars:
     srv_mon_done_file: srv_mon_done
