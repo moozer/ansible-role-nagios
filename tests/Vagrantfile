@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # set come vm options
   config.vm.box = "debian/stretch64"
-  config.vm.synced_folder "shared", "/vagrant", type: "9p"
+  config.vm.synced_folder "shared", "/vagrant", disabled: true
 
   # start this on the localhost, not a remote kvm host
   config.vm.provider :libvirt do |libvirt|
@@ -20,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # define provisioning
   config.vm.provision "ansible" do |ansible|
+    ansible.compatibility_mode = "2.0"
     ansible.playbook = "test.yml"
     ansible.groups = {
           "servers" => ["srv-mon", "srv-test"],
