@@ -36,12 +36,14 @@
       checksum: nagios_core_stat.stat.checksum
   register: nagios_core_checksum_file
 
+# ignore errors in check mode, since --check will otherwise fail at first run
 - name: Extract into {{ nagios_tgz_filename }} to {{ nagios_opt_dir }}
   unarchive:
     src:  "{{ local_cache_dir }}/{{ nagios_tgz_filename }}"
     dest: "{{ nagios_opt_dir }}"
   register: core_extract
   when: nagios_core_checksum_file.changed
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: run configure
   command: "./configure --with-nagios-group=nagios --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/"
