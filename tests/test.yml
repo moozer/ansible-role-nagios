@@ -55,6 +55,7 @@
       src: templates/custom_object.cfg.j2
       dest: "{{nagios_custom_dir}}/custom_object.cfg"
     notify: reload nagios
+    tags: nagios_update_hosts
 
   - name: create status file
     connection: local
