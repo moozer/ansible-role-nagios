@@ -46,6 +46,10 @@ Setup
 
 See `tests` directory for details
 
+We download nagios from [github](https://github.com/NagiosEnterprises/nagioscore/releases) and the version specified in `nagios_version` must match that.
+
+Nagios plugins is also downlaoded from [github](https://github.com/nagios-plugins/nagios-plugins/releases) and `nagios_plugins_version` must match a version there.
+
 ### Minimal variables needed
 
 * In the example the nagiosserver is called `nagioshost` and there is another host called `otherhost`
