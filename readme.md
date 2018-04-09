@@ -103,10 +103,15 @@ nagios_contacts:
 nagios_admin_contact:
   name: nagiosadmin
   mail: nagios@somewhere
-  pager: nagiospager@somewhere
   notify:
   - email
 
+```
+
+Alternatively, a user may be reused
+
+```
+nagios_admin_contact: "{{nagios_contacts[0]}}"
 ```
 
 #### `group_vars/servers.yml` or `group_vars/servers/nagios.yml`

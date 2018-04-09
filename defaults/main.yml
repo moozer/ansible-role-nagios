@@ -28,7 +28,6 @@ nagios_host_owner: nagiosadmin
 nagios_admin_contact:
   name: nagiosadmin
   mail: nagios@localhost
-  pager: nagiospager@localhost
   notify:
     - email
 
