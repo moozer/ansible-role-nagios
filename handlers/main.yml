@@ -2,8 +2,10 @@
 - name: apache2 restart
   service: state=restarted name=apache2
 
-- name: reload nagios
-  systemd:
-    name: nagios
-    state: reloaded
-    daemon_reload: yes
+- name: check nagios config
+  shell: "{{nagios_base_dir}}/bin/nagios -v {{nagios_base_dir}}/etc/nagios.cfg"
+  listen: reload nagios
+
+- name: do nagios reload
+  systemd: name=nagios state=reloaded daemon_reload=yes
+  listen: reload nagios

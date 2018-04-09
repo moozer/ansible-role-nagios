@@ -15,7 +15,7 @@
 # for historical purposes.  This should be the first option specified
 # in the config file!!!
 
-log_file=/usr/local/nagios/var/nagios.log
+log_file={{nagios_base_dir}}/var/nagios.log
 
 
 
@@ -26,32 +26,32 @@ log_file=/usr/local/nagios/var/nagios.log
 # if you wish (as shown below), or keep them all in a single config file.
 
 # You can specify individual object config files as shown below:
-cfg_file=/usr/local/nagios/etc/objects/commands.cfg
-#cfg_file=/usr/local/nagios/etc/objects/contacts.cfg
-cfg_file=/usr/local/nagios/etc/objects/timeperiods.cfg
-cfg_file=/usr/local/nagios/etc/objects/templates.cfg
+cfg_file={{nagios_base_dir}}/etc/objects/commands.cfg
+#cfg_file={{nagios_base_dir}}/etc/objects/contacts.cfg
+cfg_file={{nagios_base_dir}}/etc/objects/timeperiods.cfg
+cfg_file={{nagios_base_dir}}/etc/objects/templates.cfg
 
 # Definitions for monitoring the local (Linux) host
-#cfg_file=/usr/local/nagios/etc/objects/localhost.cfg
+#cfg_file={{nagios_base_dir}}/etc/objects/localhost.cfg
 
 # Definitions for monitoring a Windows machine
-#cfg_file=/usr/local/nagios/etc/objects/windows.cfg
+#cfg_file={{nagios_base_dir}}/etc/objects/windows.cfg
 
 # Definitions for monitoring a router/switch
-#cfg_file=/usr/local/nagios/etc/objects/switch.cfg
+#cfg_file={{nagios_base_dir}}/etc/objects/switch.cfg
 
 # Definitions for monitoring a network printer
-#cfg_file=/usr/local/nagios/etc/objects/printer.cfg
+#cfg_file={{nagios_base_dir}}/etc/objects/printer.cfg
 
 
 # You can also tell Nagios to process all config files (with a .cfg
 # extension) in a particular directory by using the cfg_dir
 # directive as shown below:
 
-#cfg_dir=/usr/local/nagios/etc/servers
-#cfg_dir=/usr/local/nagios/etc/printers
-#cfg_dir=/usr/local/nagios/etc/switches
-#cfg_dir=/usr/local/nagios/etc/routers
+#cfg_dir={{nagios_base_dir}}/etc/servers
+#cfg_dir={{nagios_base_dir}}/etc/printers
+#cfg_dir={{nagios_base_dir}}/etc/switches
+#cfg_dir={{nagios_base_dir}}/etc/routers
 cfg_dir={{nagios_tests_dir}}
 cfg_dir={{nagios_custom_dir}}
 
@@ -63,7 +63,7 @@ cfg_dir={{nagios_custom_dir}}
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Nagios starts.
 
-object_cache_file=/usr/local/nagios/var/objects.cache
+object_cache_file={{nagios_base_dir}}/var/objects.cache
 
 
 
@@ -79,7 +79,7 @@ object_cache_file=/usr/local/nagios/var/objects.cache
 # Read the documentation section on optimizing Nagios to find our more
 # about how this feature works.
 
-precached_object_file=/usr/local/nagios/var/objects.precache
+precached_object_file={{nagios_base_dir}}/var/objects.precache
 
 
 
@@ -92,7 +92,7 @@ precached_object_file=/usr/local/nagios/var/objects.precache
 # defined as macros in this file and restrictive permissions (600)
 # can be placed on this file.
 
-resource_file=/usr/local/nagios/etc/resource.cfg
+resource_file={{nagios_base_dir}}/etc/resource.cfg
 
 
 
@@ -102,7 +102,7 @@ resource_file=/usr/local/nagios/etc/resource.cfg
 # The contents of the status file are deleted every time Nagios
 #  restarts.
 
-status_file=/usr/local/nagios/var/status.dat
+status_file={{nagios_base_dir}}/var/status.dat
 
 
 
@@ -151,14 +151,14 @@ check_external_commands=1
 # directory level instead of on the file, as the file is deleted every
 # time its contents are processed.
 
-command_file=/usr/local/nagios/var/rw/nagios.cmd
+command_file={{nagios_base_dir}}/var/rw/nagios.cmd
 
 
 
 # QUERY HANDLER INTERFACE
 # This is the socket that is created for the Query Handler interface
 
-#query_socket=/usr/local/nagios/var/rw/nagios.qh
+#query_socket={{nagios_base_dir}}/var/rw/nagios.qh
 
 
 
@@ -166,7 +166,7 @@ command_file=/usr/local/nagios/var/rw/nagios.cmd
 # This is the lockfile that Nagios will use to store its PID number
 # in when it is running in daemon mode.
 
-lock_file=/usr/local/nagios/var/nagios.lock
+lock_file={{nagios_base_dir}}/var/nagios.lock
 
 
 
@@ -176,7 +176,7 @@ lock_file=/usr/local/nagios/var/nagios.lock
 # is created, used, and deleted throughout the time that Nagios is
 # running.
 
-temp_file=/usr/local/nagios/var/nagios.tmp
+temp_file={{nagios_base_dir}}/var/nagios.tmp
 
 
 
@@ -242,7 +242,7 @@ log_rotation_method=d
 # This is the directory where archived (rotated) log files should be
 # placed (assuming you've chosen to do log rotation).
 
-log_archive_path=/usr/local/nagios/var/archives
+log_archive_path={{nagios_base_dir}}/var/archives
 
 
 
@@ -449,7 +449,7 @@ max_check_result_reaper_time=30
 # Note: Make sure that only one instance of Nagios has access
 # to this directory!
 
-check_result_path=/usr/local/nagios/var/spool/checkresults
+check_result_path={{nagios_base_dir}}/var/spool/checkresults
 
 
 
@@ -616,7 +616,7 @@ retain_state_information=1
 # This file is used only if the retain_state_information
 # variable is set to 1.
 
-state_retention_file=/usr/local/nagios/var/retention.dat
+state_retention_file={{nagios_base_dir}}/var/retention.dat
 
 
 
@@ -829,8 +829,8 @@ process_performance_data=0
 # Performance data is only written to these files if the
 # enable_performance_data option (above) is set to 1.
 
-#host_perfdata_file=/usr/local/nagios/var/host-perfdata
-#service_perfdata_file=/usr/local/nagios/var/service-perfdata
+#host_perfdata_file={{nagios_base_dir}}/var/host-perfdata
+#service_perfdata_file={{nagios_base_dir}}/var/service-perfdata
 
 
 
@@ -1105,7 +1105,7 @@ date_format=iso8601
 # will also need to alter the Apache directives for the CGI path
 # to include your timezone.  Example:
 #
-#   <Directory "/usr/local/nagios/sbin/">
+#   <Directory "{{nagios_base_dir}}/sbin/">
 #      SetEnv TZ "Australia/Brisbane"
 #      ...
 #   </Directory>
@@ -1286,7 +1286,7 @@ debug_verbosity=1
 # DEBUG FILE
 # This option determines where Nagios should write debugging information.
 
-debug_file=/usr/local/nagios/var/nagios.debug
+debug_file={{nagios_base_dir}}/var/nagios.debug
 
 
 
