@@ -1,33 +1,33 @@
 - name: install nagios common
-  include: install_nagios_common.yml
+  import_tasks: install_nagios_common.yml
   tags: nagios_common
 
 - name: install nagios core
-  include: install_nagios_core.yml
+  import_tasks: install_nagios_core.yml
   tags: nagios_core
 
 - name: install nagios plugins
-  include: install_nagios_plugins.yml
+  import_tasks: install_nagios_plugins.yml
   tags: nagios_plugins
 
 - name: update ansible defined config
-  include: update_hosts.yml
+  import_tasks: update_hosts.yml
   tags: nagios_update_hosts
 
 - name: update ansible defined host specific services
-  include: update_host_services.yml
+  import_tasks: update_host_services.yml
   tags: nagios_update_hosts
 
 - name: update ansible defined host_groups
-  include: update_host_groups.yml
+  import_tasks: update_host_groups.yml
   tags: nagios_update_hosts
 
 - name: update ansible defined contact_groups
-  include: update_contact_groups.yml
+  import_tasks: update_contact_groups.yml
   tags: nagios_update_hosts
 
 - name: update customconfig
-  include: update_custom_objects.yml
+  import_tasks: update_custom_objects.yml
   tags: nagios_update_hosts
 
 - name: start nagios
