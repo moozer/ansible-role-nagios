@@ -1,0 +1,14 @@
+
+# 'check-host-alive' command definition
+define command{
+        command_name    check-host-alive-ip4
+        command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 5 -4
+        }
+
+define host{
+        use		generic-host
+        host_name	google.com
+        max_check_attempts 10
+        check_command	check-host-alive-ip4 ; google returns default an ipv6 address, so...
+        contacts	srv_mon_owner
+        }
