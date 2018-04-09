@@ -89,7 +89,7 @@
 
 - name: setup password for nagios admin
   htpasswd:
-    path: /usr/local/nagios/etc/htpasswd.users
+    path: "{{nagios_base_dir}}/etc/htpasswd.users"
     name: nagiosadmin
     password: "{{nagios_admin_pass}}"
     owner: root
@@ -101,7 +101,7 @@
 - name: create nagios config file
   template:
     src: nagios.cfg.j2
-    dest: /usr/local/nagios/etc/nagios.cfg
+    dest: "{{nagios_base_dir}}/etc/nagios.cfg"
     group: nagios
     owner: nagios
     mode: 0664
