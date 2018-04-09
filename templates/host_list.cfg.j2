@@ -22,15 +22,15 @@ define host{
 {% for host in groups['all'] %}
 
 # host {{ host }}
-{% if hostvars[host].nagios_exclude_host %}
-# host excluded (nagios_exclude_host is set to True)
-{% else %}
+{% if (hostvars[host].nagios_exclude_host is not defined) or (not hostvars[host].nagios_exclude_host) %}
 define host{
         use           default-ansible-host
         host_name     {{host}}
         contacts      {{hostvars[host].nagios_host_owner}}
         notes         Nagios config by ansible
         }
-
+{% else %}
+# host excluded (nagios_exclude_host is set to True)
 {% endif %}
+
 {% endfor %}
