@@ -2,7 +2,7 @@
 local_cache_dir: cache
 
 # nagios configurations
-nagios_version: "4.3.2"
+nagios_version: "4.3.4"
 nagios_tgz_filename: "nagios-{{ nagios_version }}.tar.gz"
 nagios_opt_dir: /opt/nagios
 nagios_core_dir: "{{nagios_opt_dir}}/nagioscore-nagios-{{nagios_version}}"
@@ -28,7 +28,6 @@ nagios_host_owner: nagiosadmin
 nagios_admin_contact:
   name: nagiosadmin
   mail: nagios@localhost
-  pager: nagiospager@localhost
   notify:
     - email
 
@@ -38,7 +37,9 @@ nagios_admin_contact:
 #   ping: "check_ping!100.0,20%!500.0,60%"
 #   ssh: check_ssh
 #
+# nagios_exclude_host: False
 # nagios_exclude_group: False
+# # extra host checks, if applicable
 # nagios_host_checks:
 #   ping2: "check_ping!100.0,20%!500.0,60%"
 

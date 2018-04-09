@@ -20,6 +20,7 @@
     - apache2-utils
     - php
 
+# ignore errors in check mode, since --check will otherwise fail at first run
 - name: enable modules in apache
   apache2_module:
     state: present
@@ -28,12 +29,14 @@
     - rewrite
     - cgi
   notify: apache2 restart
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: put www-data in nagcmd group
   user:
     name: www-data
     groups: nagcmd
     append: yes
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: install general tools
   apt:

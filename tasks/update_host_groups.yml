@@ -7,10 +7,12 @@
     mode: 0664
   when: (groups[item] | count > 0)
         and (item not in nagios_group_exclude_list)
-        and not hostvars[groups[item][0]].nagios_exclude_group
+        and ((not 'nagios_exclude_group' in hostvars[groups[item][0]])
+            or (not hostvars[groups[item][0]].nagios_exclude_group))
   with_items: "{{groups}}"
   register: host_group_result
   notify: reload nagios
+
 
 - name: find host_group files
   find:
@@ -25,7 +27,7 @@
                                         |map(attribute='invocation')
                                         |map(attribute='module_args')
                                         |map(attribute='dest')|list}}"
-                                        
+
 - name: remove stale host_group files
   file:
     state: absent
