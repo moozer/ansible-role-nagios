@@ -74,5 +74,9 @@
       path: "{{srv_mon_done_file}}"
       timeout: 600
 
+  - name: sleep for 10 seconds to ensure all handlers are done
+    wait_for: timeout=10
+    delegate_to: localhost
+
   - name: check for nagios webpage asking for password
     action: uri url=http://{{hostvars['srv-mon']["ansible_host"]}}/nagios return_content=yes status_code=401
