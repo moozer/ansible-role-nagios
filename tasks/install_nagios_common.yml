@@ -36,6 +36,7 @@
     name: www-data
     groups: nagcmd
     append: yes
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: install general tools
   apt:

@@ -47,24 +47,28 @@
     dest: "{{ nagios_opt_dir }}"
   register: plugins_extract
   when: nagios_plugins_checksum_file.changed
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: run setup tool
   command: "./tools/setup"
   args:
     chdir: "{{nagios_plugins_dir}}"
   when: nagios_plugins_checksum_file.changed or plugins_extract.changed
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: run configure
   command: "./configure"
   args:
     chdir: "{{nagios_plugins_dir}}"
   when: nagios_plugins_checksum_file.changed or plugins_extract.changed
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: run make
   command: "make"
   args:
     chdir: "{{nagios_plugins_dir}}"
   when: nagios_plugins_checksum_file.changed or plugins_extract.changed
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: run make install
   command: "make install"
@@ -72,3 +76,4 @@
     chdir: "{{nagios_plugins_dir}}"
   notify: reload nagios
   when: nagios_plugins_checksum_file.changed or plugins_extract.changed
+  ignore_errors: "{{ ansible_check_mode }}"

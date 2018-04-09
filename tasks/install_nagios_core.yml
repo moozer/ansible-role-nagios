@@ -96,6 +96,7 @@
     group: www-data
     mode: 0640
   notify: apache2 restart
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: create nagios config file
   template:
