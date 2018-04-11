@@ -29,6 +29,3 @@
 - name: update customconfig
   import_tasks: update_custom_objects.yml
   tags: nagios_update_hosts
-
-- name: start nagios
-  systemd: name=nagios state=started
