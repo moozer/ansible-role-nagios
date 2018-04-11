@@ -1,10 +1,3 @@
-nagios_admin_contact:
-  name: nagiosadmin
-  mail: nagios@localhost
-  notify:
-    - email
-
-
 nagios_contacts:
   - name: srv_mon_owner
     mail: srv_mon_owner@localhost
@@ -12,7 +5,7 @@ nagios_contacts:
       - email
 
 nagios_group_contacts:
-  - nagiosadmin
+  - srv_mon_owner
 
 #nagios_group_tests:
 #  ping: "check_ping!100.0,20%!500.0,60%"
@@ -21,4 +14,4 @@ nagios_group_contacts:
 #nagios_exclude_group: False
 #nagios_exclude_host: False
 
-nagios_host_owner: nagiosadmin
+nagios_host_owner: srv_mon_owner

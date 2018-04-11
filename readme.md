@@ -92,7 +92,8 @@ otherhostB
 
 * define the users that will be referenced in notifications
 * define contact info for the default nagiosadmin user
-* Both users A and B will be botified by `email` (since it is default), and `userA` will also be notified using `othermean`.
+* Both users A and B will be notified by `email` (since it is default), and `userA` will also be notified using `othermean`.
+* User A is in the admin group and will receive notification for that group
 
 ```
 nagios_contacts:
@@ -104,18 +105,7 @@ nagios_contacts:
   - name: userB
     mail: userB@somewhere
 
-nagios_admin_contact:
-  name: nagiosadmin
-  mail: nagios@somewhere
-  notify:
-  - email
-
-```
-
-Alternatively, a user may be reused
-
-```
-nagios_admin_contact: "{{nagios_contacts[0]}}"
+nagios_admin_group_contact: userA
 ```
 
 #### `group_vars/servers.yml` or `group_vars/servers/nagios.yml`
