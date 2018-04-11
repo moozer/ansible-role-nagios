@@ -33,7 +33,7 @@
     src: checksum.txt.j2
     dest: "{{ nagios_opt_dir }}/nagios_core_checksum.txt"
   vars:
-      checksum: nagios_core_stat.stat.checksum
+      checksum: "{{nagios_core_stat.stat.checksum}}"
   register: nagios_core_checksum_file
 
 # ignore errors in check mode, since --check will otherwise fail at first run
