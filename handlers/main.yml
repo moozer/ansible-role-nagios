@@ -7,5 +7,5 @@
   listen: reload nagios
 
 - name: do nagios reload
-  systemd: name=nagios state=reloaded daemon_reload=yes
+  systemd: name=nagios state=restarted daemon_reload=yes
   listen: reload nagios
