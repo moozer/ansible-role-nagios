@@ -14,8 +14,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # start this on the localhost, not a remote kvm host
   config.vm.provider :libvirt do |libvirt|
-    libvirt.host = ""
-    libvirt.memory = 1024
+    libvirt.memory = 2048
+    libvirt.cpus = 2
   end
 
   # define provisioning
