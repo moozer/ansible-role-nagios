@@ -90,7 +90,7 @@
 - name: setup password for nagios admin
   htpasswd:
     path: "{{nagios_base_dir}}/etc/htpasswd.users"
-    name: nagiosadmin
+    name: "{{nagios_admin_user}}"
     password: "{{nagios_admin_pass}}"
     owner: root
     group: www-data
