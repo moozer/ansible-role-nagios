@@ -7,7 +7,7 @@
 - name: add nagios user
   user:
     name: nagios
-    shell: /bin/nologin
+    shell: /bin/bash
     groups: nagcmd
 
 # install packages
@@ -28,7 +28,7 @@
   with_items:
     - rewrite
     - cgi
-  notify: apache2 restart
+  notify: nagios apache2 restart
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: put www-data in nagcmd group

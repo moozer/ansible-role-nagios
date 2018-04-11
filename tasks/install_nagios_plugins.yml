@@ -38,7 +38,7 @@
     src: checksum.txt.j2
     dest: "{{ nagios_opt_dir }}/nagios_plugins_checksum.txt"
   vars:
-      checksum: nagios_plugins_stat.stat.checksum
+      checksum: "{{nagios_plugins_stat.stat.checksum}}"
   register: nagios_plugins_checksum_file
 
 - name: "Extract into {{nagios_plugins_tgz_filename}} to {{ nagios_opt_dir }}"

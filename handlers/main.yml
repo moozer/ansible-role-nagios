@@ -1,5 +1,5 @@
 # nothing yet
-- name: apache2 restart
+- name: nagios apache2 restart
   service: state=restarted name=apache2
 
 - name: check nagios config
@@ -7,5 +7,5 @@
   listen: reload nagios
 
 - name: do nagios reload
-  systemd: name=nagios state=reloaded daemon_reload=yes
+  systemd: name=nagios state=restarted daemon_reload=yes
   listen: reload nagios
