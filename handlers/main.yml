@@ -1,5 +1,5 @@
 # nothing yet
-- name: apache2 restart
+- name: nagios apache2 restart
   service: state=restarted name=apache2
 
 - name: check nagios config
