@@ -24,12 +24,22 @@ nagios_group_exclude_list:
   - ungrouped
 
 # contacts definitions
-nagios_host_owner: nagiosadmin
-nagios_admin_contact:
-  name: nagiosadmin
-  mail: nagios@localhost
-  notify:
-    - email
+# nagios_contacts:
+#  - name: srv_mon_owner
+#    mail: srv_mon_owner@localhost
+#    notify:
+#      - email
+
+# contacts for specific groups
+# to be put in group_vars/<group_name>
+nagios_group_contact:
+
+# admin group is a special group
+#nagios_admin_group_contact: NameFromContactsList
+
+# contact for specific host
+# to be put in host_vars/<host>
+# nagios_host_owner:
 
 # -- must go in group_Vars or host_vars
 # # Default nagios host_group tests
