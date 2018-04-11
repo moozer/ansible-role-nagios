@@ -7,7 +7,7 @@
 - name: add nagios user
   user:
     name: nagios
-    shell: /bin/nologin
+    shell: /bin/bash
     groups: nagcmd
 
 # install packages
