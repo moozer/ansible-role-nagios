@@ -2,7 +2,7 @@
 local_cache_dir: cache
 
 # nagios configurations
-nagios_version: "4.3.4"
+nagios_version: "4.4.0"
 nagios_tgz_filename: "nagios-{{ nagios_version }}.tar.gz"
 nagios_opt_dir: /opt/nagios
 nagios_core_dir: "{{nagios_opt_dir}}/nagioscore-nagios-{{nagios_version}}"
