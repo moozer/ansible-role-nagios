@@ -20,7 +20,7 @@ Design decisions
     Devices in a group will automatically be in a nagios group of the same name
     Groups named `all` and `ungrouped` are ignored by default.
 
-* provisioning to nagios is independant of fact collection
+* provisioning to nagios is independent of fact collection
 
     All the info that nagios needs are in `group_vars` and `host_vars`, so it is sufficient to have the devices in inventory.
 
@@ -40,6 +40,7 @@ Design decisions
 
     `custom-objects` contains whatever manual stuff the admin want also, like non-default commands and non-ansible hosts.
 
+* role is usable `out-of-the-box`, ie. no config is need to have an minimal setup.
 
 Setup
 -------------
@@ -48,9 +49,29 @@ See `tests` directory for details
 
 We download nagios from [github](https://github.com/NagiosEnterprises/nagioscore/releases) and the version specified in `nagios_version` must match that.
 
-Nagios plugins is also downlaoded from [github](https://github.com/nagios-plugins/nagios-plugins/releases) and `nagios_plugins_version` must match a version there.
+Nagios plugins are also downloaded from [github](https://github.com/nagios-plugins/nagios-plugins/releases) and `nagios_plugins_version` must match a version there.
 
-### Minimal variables needed
+### Minimal config
+
+The role may be used without setting any `host_vars` or `group_vars`. See [test-defaults/test.yml](test-defaults) for an example
+
+So a playbook like this is minimum
+
+```
+- hosts: all
+
+  roles:
+  - {role: server-nagios, become: true }
+
+```
+
+This assumes that the roles is pulled to the directory `roles/server-nagios`.
+
+Notifications will be minimal, localhost will have some checks, and every other device in `inventory` will be a host with no service checks.
+
+
+
+### Small example
 
 * In the example the nagiosserver is called `nagioshost` and there is another host called `otherhost`
 
@@ -76,12 +97,13 @@ otherhostB
 - hosts: nagioshost
 
   roles:
-  - { role: server-nagios }
+  - { role: server-nagios, become: true }
 
-- hosts: otherhost?
-
-  roles:
-  - {}
+# provision other hosts if applicable
+#- hosts: otherhost?
+#
+#  roles:
+#  - {}
 ```
 
 ### Defining variables for the host groups
@@ -113,7 +135,6 @@ nagios_admin_group_contact: userA
 * define who should be notified when something happens
 * define the tests that are to be used for all groups. The text writeen will be used directly as check command. See the nagios documentation for [details](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/plugins.html).
 
-
 ```
 nagios_group_contacts:
   - userA
@@ -128,7 +149,6 @@ nagios_group_tests:
 
 * the group `otherservers` are not to be included in nagios
 * hosts in the groups will, unless something else is defined in hostvars, be excluded from nagios.
-
 
 ```
 nagios_exclude_group: True
@@ -148,4 +168,16 @@ nagios_host_owner: userA
 
 nagios_admin_user: nagiosadmin
 nagios_admin_pass: somepass
+```
+
+#### `host_vars/otherhostA.yml` or `host_vars/otherhostA/nagios.yml`
+
+* `userB` is the owner and will be notified.
+* Specific to `otherhostA`, HTTP will also be checked. Other checks from the group are still included.
+
+```
+nagios_host_owner: userB
+
+nagios_host_checks:
+  http: check_http
 ```
