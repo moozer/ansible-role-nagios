@@ -8,6 +8,7 @@ define contactgroup {
 {% endif %}
 }
 
+{% if nagios_contacts is defined %}
 {% for c in nagios_contacts %}
 define contact {
   contact_name     {{c.name}}
@@ -18,11 +19,23 @@ define contact {
   service_notification_commands   notify-service-by-{{c.notify | join(", notify-service-by-")}}
   host_notification_commands      notify-host-by-{{c.notify | join(", notify-host-by-")}}
   {% else %}
-  {% if c.email %}
-  service_notification_commands   notify-service-by-email}}
-  host_notification_commands      notify-host-by-email}}
-  {% endif %}
+  service_notification_commands   notify-service-by-email
+  host_notification_commands      notify-host-by-email
   {% endif %}
 
 }
 {% endfor %}
+{% else %}
+
+# nagios_contacts not defined in ansible.
+# fall back to generic root as only contact
+define contact {
+  contact_name     root@localhost
+  use	             generic-contact
+  email            root@localhost
+
+  service_notification_commands   notify-service-by-email
+  host_notification_commands      notify-host-by-email
+}
+
+{% endif %}
