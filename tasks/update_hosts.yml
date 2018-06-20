@@ -24,6 +24,13 @@
     mode: 0664
   notify: reload nagios
 
+- name: ensure original localhost checks are removed
+  file:
+    path: "{{nagios_base_dir}}/etc/objects/localhost.cfg"
+    state: absent
+  when: nagios_localhost_check
+  notify: reload nagios
+  
 - name: add localhost checks
   template:
     src: localhost_checks.cfg.j2
