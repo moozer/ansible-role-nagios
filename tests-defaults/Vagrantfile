@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # servers to work with
+  servers = ["srv-mon"]
+
+  # set come vm options
+  config.vm.box = "debian/stretch64"
+  config.vm.synced_folder "shared", "/vagrant", disabled: true
+
+  # start this on the localhost, not a remote kvm host
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.memory = 2048
+    libvirt.cpus = 2
+  end
+
+  # define provisioning
+  config.vm.provision "ansible" do |ansible|
+    ansible.compatibility_mode = "2.0"
+    ansible.playbook = "test.yml"
+  end
+
+  # spin up servers
+  servers.each do |server_name|
+    config.vm.define server_name do |machine|
+          machine.vm.hostname = server_name
+    end
+  end
+
+
+end
