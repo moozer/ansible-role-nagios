@@ -122,8 +122,8 @@ nagios_contacts:
   - name: userA
     mail: userA@somewhere
     notify:
-    - email
-    - othermean
+      - email
+      - othermean
   - name: userB
     mail: userB@somewhere
 
