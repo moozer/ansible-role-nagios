@@ -53,7 +53,7 @@ Nagios plugins are also downloaded from [github](https://github.com/nagios-plugi
 
 ### Minimal config
 
-The role may be used without setting any `host_vars` or `group_vars`. See [test-defaults/test.yml](test-defaults) for an example
+The role may be used without setting any `host_vars` or `group_vars`. See [test-defaults/test.yml](https://github.com/moozer/ansible-role-nagios/blob/master/tests-defaults/test.yml) for an example
 
 So a playbook like this is minimum
 
@@ -133,7 +133,7 @@ nagios_admin_group_contact: userA
 #### `group_vars/servers.yml` or `group_vars/servers/nagios.yml`
 
 * define who should be notified when something happens
-* define the tests that are to be used for all groups. The text writeen will be used directly as check command. See the nagios documentation for [details](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/plugins.html).
+* define the tests that are to be used for all groups. The text written will be used directly as check command. See the nagios documentation for [details](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/plugins.html).
 
 ```
 nagios_group_contacts:
