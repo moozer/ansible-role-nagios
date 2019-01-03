@@ -37,15 +37,6 @@
       name: "{{ inventory_hostname }}"
     tags: pre-tasks
 
-  - name: update hosts file
-    template:
-      src: etc_hosts.j2
-      dest: /etc/hosts
-      mode: 0644
-      owner: root
-      group: root
-    tags: pre-tasks
-
   roles:
   - { role: server-nagios }
 

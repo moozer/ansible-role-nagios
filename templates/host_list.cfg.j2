@@ -26,6 +26,7 @@ define host{
 define host{
         use           default-ansible-host
         host_name     {{host}}
+        address       {{hostvars[host]['ansible_host']}}
 {% if 'nagios_host_owner' in hostvars[host] %}
         contacts      {{hostvars[host].nagios_host_owner}}
 {% endif %}
