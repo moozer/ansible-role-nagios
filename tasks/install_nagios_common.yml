@@ -13,12 +13,8 @@
 # install packages
 - name: install apache webserver
   apt:
-    name: "{{ item }}"
+    name: ["apache2", "apache2-utils", "php"]
     state: present
-  with_items:
-    - apache2
-    - apache2-utils
-    - php
 
 # ignore errors in check mode, since --check will otherwise fail at first run
 - name: enable modules in apache
@@ -40,12 +36,8 @@
 
 - name: install general tools
   apt:
-    name: "{{ item }}"
+    name: ["wget", "unzip", "python-passlib"]
     state: present
-  with_items:
-    - wget
-    - unzip
-    - python-passlib
 
 - name: "create local cache dir ({{local_cache_dir}})"
   connection: local
